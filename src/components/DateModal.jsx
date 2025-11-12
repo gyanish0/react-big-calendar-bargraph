@@ -12,28 +12,45 @@ function DateModal({ dateLabel, data, onClose }) {
         : []
 
     return (
-        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
-            <div className="bg-white p-4 w-full max-w-2xl rounded-lg shadow-lg">
-                <div className="flex items-center justify-between">
-                    <h3 className="text-lg font-semibold">{dateLabel}</h3>
-                    <button className="px-3 py-1 border rounded" onClick={onClose}>Close</button>
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 transition-all">
+            <div className="bg-white rounded-xl shadow-2xl w-full max-w-2xl mx-4 p-6 animate-fadeIn">
+                <div className="flex justify-between items-center border-b border-gray-200 pb-3 mb-4">
+                    <h3 className="text-xl font-semibold text-gray-700">
+                        {dateLabel}
+                    </h3>
+                    <button
+                        onClick={onClose}
+                        className="px-3 py-1 text-sm bg-gray-100 hover:bg-gray-200 text-gray-600 rounded-md transition-colors"
+                    >
+                        ✖ Close
+                    </button>
                 </div>
-                <div className="mt-3">
-                    {hasData ? (
-                        <div style={{ width: '100%', height: 250 }}>
-                            <ResponsiveContainer width="100%" height={250}>
-                                <BarChart data={chartData} margin={{ top: 10, right: 20, left: 20, bottom: 5 }}>
-                                    <XAxis dataKey="name" />
-                                    <YAxis />
-                                    <Tooltip />
-                                    <Bar dataKey="value" fill="#6366f1" />
-                                </BarChart>
-                            </ResponsiveContainer>
-                        </div>
-                    ) : (
-                        <div className="text-red-600 font-semibold">No data found for the selected date: {dateLabel}</div>
-                    )}
-                </div>
+
+                {hasData ? (
+                    <div className="h-64">
+                        <ResponsiveContainer width="100%" height="100%">
+                            <BarChart
+                                data={chartData}
+                                margin={{ top: 10, right: 20, left: 10, bottom: 10 }}
+                            >
+                                <XAxis dataKey="name" />
+                                <YAxis />
+                                <Tooltip
+                                    contentStyle={{
+                                        backgroundColor: '#f9fafb',
+                                        borderRadius: '8px',
+                                        border: '1px solid #ddd',
+                                    }}
+                                />
+                                <Bar dataKey="value" fill="#6366f1" radius={[6, 6, 0, 0]} />
+                            </BarChart>
+                        </ResponsiveContainer>
+                    </div>
+                ) : (
+                    <div className="text-center text-red-600 font-semibold mt-6">
+                        No data found for the selected date: <span className="underline">{dateLabel}</span>
+                    </div>
+                )}
             </div>
         </div>
     )
